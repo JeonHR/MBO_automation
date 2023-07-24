@@ -17,48 +17,63 @@ for txt_name in all_unused_txt:
         os.remove(unused_file_path) 
 
 
-time.sleep (2)
+
 print("unused txt file이 삭제 완료 되었습니다. ")
+time.sleep (2)
 
 ########################################
 
-# 특정 폴더 경로와 병합 결과를 저장할 파일명 설정
-Merged_folder_path = "./"  # 특정 경로
-output_file = "merged.txt"  # 병합한 결과를 저장할 파일
 
+def merge_txt_files(Merged_input_path, Merged_output_file):
+    with open(Merged_output_file, 'w', encoding='utf-8') as Mereged_outfile:
+        for i in range(1, 17):  # site 1 ~16
+            merge_file_name = f"{Merged_input_path}/site{i}.txt"  # site{i}.txt 
+            try:
+                with open(merge_file_name, 'r', encoding='utf-8') as infile:
+                    Mereged_outfile.write(infile.read())  # site{i}.txt 파일의 내용을 Merge.txt에 추가
+            except FileNotFoundError:
+                print(f"File {merge_file_name} not found. Stop.")
+                break
 
+if __name__ == "__main__":
+    Merged_input_path = "./"  # Merged file path
+    Merged_output_file = "Merge.txt"  # Merged file name
+    merge_txt_files(Merged_input_path, Merged_output_file)
 
-def merge_txt_files(Merged_folder_path, output_file):
-    # fold in all file
-    Merged_file = os.listdir(Merged_folder_path)
+print("Merged txt로 변환 완료 되었습니다. ")
+time.sleep (2)
 
-    # 파일을 읽어서 데이터를 리스트로 저장
-    merged_data = []
-    for Merge_file_name in Merged_file:
-        if Merge_file_name.endswith(".txt"):
-            file_path = os.path.join(Merged_folder_path, Merge_file_name)
-            with open(Merged_folder_path, 'r') as Merge_file:
-                lines = Merge_file.readlines()
-                # 개행 문자 제거 후 데이터를 병합할 리스트에 추가
-                merged_data.extend(lines)
-
-    # 병합한 데이터를 새로운 파일에 쓰기
-    with open(output_file, 'w') as new_file:
-        for line in merged_data:
-            new_file.write(line)
-
-    print(f"모든 .txt 파일을 {output_file}에 병합하여 저장하였습니다.")
-
-# Merge file & path 
-Merged_folder_path = "./"  # merge file path
-output_file = "merged.txt"  # Result txt file
-
-# Merge txt file 
-merge_txt_files(Merged_folder_path, output_file)
 
 ##############################################
-  sss
 
+def txt_to_excel(Mer_txt_file, pathloss_excel_file, sheet_name):
+    # txt file read & save
+    with open(Mer_txt_file, 'r') as Mer_file:
+        txt_content_ex = Mer_file.read()
+
+    # data Frame conversion
+    df = pd.DataFrame([txt_content_ex], columns=['Content'])
+
+    # excel file load
+    writer = pd.ExcelWriter(Pathloss_excel_file_path, mode='a', engine='openpyxl')
+
+    # add excel sheet
+    df.to_excel(writer, sheet_name=sheet_name, index=False)
+
+    # save & close
+    writer.save()
+    writer.close()
+
+Mer_txt_file_path = './Merge.txt'
+Pathloss_excel_file_path = './ko.xlsx'
+pathloss_selected_sheet_name = 'Sheet1'  
+
+txt_to_excel(Mer_txt_file_path, Pathloss_excel_file_path, pathloss_selected_sheet_name)
+print("Merge txt가 excel file에 복사가 완료 되었습니다.")
+time.sleep(2)
+
+
+##############################################
 
 print(current_directory)
 

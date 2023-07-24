@@ -1,34 +1,35 @@
 
-# 특정 폴더 경로와 병합 결과를 저장할 파일명 설정
-Merged_folder_path = "./"  # 특정 경로
-output_file = "merged.txt"  # 병합한 결과를 저장할 파일
+import os
+import pandas as pd
+import time 
+import re
+
+current_directory = os.getcwd()
 
 
+import pandas as pd
 
-def merge_txt_files(Merged_folder_path, output_file):
-    # fold in all file
-    Merged_file = os.listdir(Merged_folder_path)
+def txt_to_excel(txt_file_path, excel_file_path, sheet_name):
+    # txt 파일 읽기
+    with open(txt_file_path, 'r') as file:
+        data = file.readlines()
 
-    # 파일을 읽어서 데이터를 리스트로 저장
-    merged_data = []
-    for Merge_file_name in Merged_file:
-        if Merge_file_name.endswith(".txt"):
-            file_path = os.path.join(Merged_folder_path, Merge_file_name)
-            with open(Merged_folder_path, 'r') as Merge_file:
-                lines = Merge_file.readlines()
-                # 개행 문자 제거 후 데이터를 병합할 리스트에 추가
-                merged_data.extend(lines)
+    # 데이터 분할 및 리스트로 변환
+    data_list = [line.strip().split(',') for line in data]
 
-    # 병합한 데이터를 새로운 파일에 쓰기
-    with open(output_file, 'w') as new_file:
-        for line in merged_data:
-            new_file.write(line)
+    # 데이터프레임 생성
+    df = pd.DataFrame(data_list)
 
-    print(f"모든 .txt 파일을 {output_file}에 병합하여 저장하였습니다.")
+    # Excel 파일로 저장
+    with pd.ExcelWriter(excel_file_path, engine='openpyxl', mode='a') as writer:
+        df.to_excel(writer, sheet_name=sheet_name, index=False, header=False)
+        writer.save()  # Save the data to the Excel file
 
-# 특정 폴더 경로와 병합 결과를 저장할 파일명 설정
-Merged_folder_path = "./"  # 특정 경로
-output_file = "merged.txt"  # 병합한 결과를 저장할 파일
+txt_file_path = './merge.txt'  # 실제 파일 경로와 파일명으로 바꾸세요
+excel_file_path = './ko.xlsx'  # 실제 파일 경로와 파일명으로 바꾸세요
+sheet_name = 'sheet1'  # 원하는 시트 이름으로 바꾸세요
 
-# 병합 함수 호출
-merge_txt_files(Merged_folder_path, output_file)
+txt_to_excel(txt_file_path, excel_file_path, sheet_name)
+print("Merge txt가 excel file에 복사가 완료 되었습니다.")
+
+time.sleep(2)
