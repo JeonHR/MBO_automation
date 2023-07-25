@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import time 
 import re
-
+import subprocess
 
 current_directory = os.getcwd()
 unused_folder_path = "./unused_txt"
@@ -46,38 +46,52 @@ time.sleep (2)
 
 ##############################################
 
-def txt_to_excel(Mer_txt_file, pathloss_excel_file, sheet_name):
-    # txt file read & save
-    with open(Mer_txt_file, 'r') as Mer_file:
-        txt_content_ex = Mer_file.read()
 
-    # data Frame conversion
-    df = pd.DataFrame([txt_content_ex], columns=['Content'])
+def txt_to_excel(from_txt_file_path, to_txt_from_excel_file_path, sheet):
+    # txt 파일 읽기
+    with open(from_txt_file_path, 'r') as from_file:
+        data = from_file.readlines()
 
-    # excel file load
-    writer = pd.ExcelWriter(Pathloss_excel_file_path, mode='a', engine='openpyxl')
+    # data split and list
+    data_list = [line.strip().split(',') for line in data]
 
-    # add excel sheet
-    df.to_excel(writer, sheet_name=sheet_name, index=False)
+    # 데이터프레임 생성
+    df = pd.DataFrame(data_list)
 
-    # save & close
-    writer.save()
-    writer.close()
+    # Excel 파일로 저장
+    with pd.ExcelWriter(to_txt_from_excel_file_path, engine='openpyxl', mode='a') as writer:
+        df.to_excel(writer, sheet_name=sheet, index=False, header=False)
 
-Mer_txt_file_path = './Merge.txt'
-Pathloss_excel_file_path = './ko.xlsx'
-pathloss_selected_sheet_name = 'Sheet1'  
+    print(f"data가 {sheet} 시트에 성공적으로 저장되었습니다!")
 
-txt_to_excel(Mer_txt_file_path, Pathloss_excel_file_path, pathloss_selected_sheet_name)
-print("Merge txt가 excel file에 복사가 완료 되었습니다.")
+
+from_txt_file_path = './Merge.txt'  # file path
+to_txt_from_excel_file_path = './ko.xlsx'  # excel path
+sheet = 'Sheet1'  # sheet name
+
+txt_to_excel(from_txt_file_path, to_txt_from_excel_file_path, sheet)
+print("Merge.txt 파일의 데이터가 Excel 파일에 복사되었습니다.")
+
 time.sleep(2)
 
 
 ##############################################
 
-print(current_directory)
 
-folder_path = "./excel"
-excel_file = os.path.join(current_directory, folder_path, 'ko.xlsx')
-df = pd.read_excel(excel_file, sheet_name = 'ko')
-print (df)
+
+############################################
+
+
+
+def run_perl_program(perl_script_path):
+
+    try:
+        subprocess.run(["perl", perl_script_path], check=True)
+        print("Perl 프로그램이 성공적으로 실행되었습니다.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error occurred: {e}")
+
+perl_script_path = "./your_perl_script.pl"
+
+run_perl_program(perl_script_path)
+
