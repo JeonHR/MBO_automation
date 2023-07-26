@@ -1,0 +1,37 @@
+import os
+import pandas as pd
+
+current_directory = os.getcwd()
+
+folder_path = "./txt"
+folder_path_Pathloss_r2="./"
+
+excel_file = os.path.join(current_directogry, 'Pathloss_Tool.xlsx')
+
+dfs = {}
+for i in range(1, 17):
+    dfs[i] = pd.read_excel(excel_file, sheet_name=f'site{i}')
+    print(f"Data from sheet {i}:")
+    print(dfs[i])
+    print("site sorting 완료")
+    txt_file = os.path.join(current_directory, folder_path, f'site{i}.txt')
+    dfs[i].to_csv(txt_file, sep=',', index=False)
+
+print("txt로 저장 완료!")
+
+
+for i in range(1, 17):
+    txt_file = os.path.join(current_directory, folder_path, f'site{i}.txt')
+    new_txt_file = os.path.join(current_directory, folder_path_Pathloss_r2, f'pathloss_r2_s{i}.txt')
+
+    with open(txt_file, 'r') as file:
+        lines = file.readlines()
+
+    with open(new_txt_file, 'w') as new_file:
+        for line in lines:
+            new_line = line.replace('"', '') 
+            new_file.write(new_line)
+
+
+
+print("pathlos_txt, 파일로 변환 완료!")
