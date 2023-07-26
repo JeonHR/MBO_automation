@@ -1,10 +1,16 @@
 import os
 import pandas as pd
 import time 
+<<<<<<< HEAD
 import subprocess
 
 ### TXT file delete
 
+=======
+import re
+import subprocess
+
+>>>>>>> 1961c0f7f5a96b33e396130626d6a5b8cfe98407
 current_directory = os.getcwd()
 unused_folder_path = "./unused_txt"
 
@@ -28,7 +34,11 @@ time.sleep (2)
 def merge_txt_files(Merged_input_path, Merged_output_file):
     with open(Merged_output_file, 'w', encoding='utf-8') as Mereged_outfile:
         for i in range(1, 17):  # site 1 ~16
+<<<<<<< HEAD
             merge_file_name = f"{Merged_input_path}/pathloss_r2_site{i}.txt"  # site{i}.txt 
+=======
+            merge_file_name = f"{Merged_input_path}/site{i}.txt"  # site{i}.txt 
+>>>>>>> 1961c0f7f5a96b33e396130626d6a5b8cfe98407
             try:
                 with open(merge_file_name, 'r', encoding='utf-8') as infile:
                     Mereged_outfile.write(infile.read())  # site{i}.txt 파일의 내용을 Merge.txt에 추가
@@ -67,8 +77,13 @@ def txt_to_excel(from_txt_file_path, to_txt_from_excel_file_path, sheet):
 
 
 from_txt_file_path = './Merge.txt'  # file path
+<<<<<<< HEAD
 to_txt_from_excel_file_path = './Pathloss_Tool.xlsx'  # excel path
 sheet = 'go'  # sheet name
+=======
+to_txt_from_excel_file_path = './ko.xlsx'  # excel path
+sheet = 'Sheet1'  # sheet name
+>>>>>>> 1961c0f7f5a96b33e396130626d6a5b8cfe98407
 
 txt_to_excel(from_txt_file_path, to_txt_from_excel_file_path, sheet)
 print("Merge.txt 파일의 데이터가 Excel 파일에 복사되었습니다.")
@@ -77,6 +92,7 @@ time.sleep(2)
 
 
 ##############################################
+<<<<<<< HEAD
 folder_path = "./unused_txt"
 folder_path_Pathloss_r2="./"
 current_directory = os.getcwd()
@@ -111,6 +127,11 @@ for i in range(1, 17):
 print("pathlos_txt, 파일로 변환 완료!")
 time.sleep(2)
 
+=======
+
+
+
+>>>>>>> 1961c0f7f5a96b33e396130626d6a5b8cfe98407
 ############################################
 
 
@@ -127,4 +148,7 @@ perl_script_path = "./your_perl_script.pl"
 
 run_perl_program(perl_script_path)
 
+<<<<<<< HEAD
 time.sleep(2)
+=======
+>>>>>>> 1961c0f7f5a96b33e396130626d6a5b8cfe98407
