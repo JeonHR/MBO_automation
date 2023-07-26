@@ -1,16 +1,10 @@
 import os
 import pandas as pd
 import time 
-<<<<<<< HEAD
 import subprocess
 
 ### TXT file delete
 
-=======
-import re
-import subprocess
-
->>>>>>> 1961c0f7f5a96b33e396130626d6a5b8cfe98407
 current_directory = os.getcwd()
 unused_folder_path = "./unused_txt"
 
@@ -34,11 +28,7 @@ time.sleep (2)
 def merge_txt_files(Merged_input_path, Merged_output_file):
     with open(Merged_output_file, 'w', encoding='utf-8') as Mereged_outfile:
         for i in range(1, 17):  # site 1 ~16
-<<<<<<< HEAD
             merge_file_name = f"{Merged_input_path}/pathloss_r2_site{i}.txt"  # site{i}.txt 
-=======
-            merge_file_name = f"{Merged_input_path}/site{i}.txt"  # site{i}.txt 
->>>>>>> 1961c0f7f5a96b33e396130626d6a5b8cfe98407
             try:
                 with open(merge_file_name, 'r', encoding='utf-8') as infile:
                     Mereged_outfile.write(infile.read())  # site{i}.txt 파일의 내용을 Merge.txt에 추가
@@ -58,41 +48,32 @@ time.sleep (2)
 ##############################################
 
 
-def txt_to_excel(from_txt_file_path, to_txt_from_excel_file_path, sheet):
-    # txt 파일 읽기
-    with open(from_txt_file_path, 'r') as from_file:
-        data = from_file.readlines()
 
-    # data split and list
-    data_list = [line.strip().split(',') for line in data]
 
-    # 데이터프레임 생성
-    df = pd.DataFrame(data_list)
 
-    # Excel 파일로 저장
+
+def append_txt_to_excel(from_txt_file_path, to_txt_from_excel_file_path, sheet):
+    # 텍스트 파일을 쉼표로 구분하여 데이터프레임으로 읽기
+    df = pd.read_csv(from_txt_file_path, sep=',')
+
+    # 기존 Excel 파일에 시트 추가 및 데이터 추가
     with pd.ExcelWriter(to_txt_from_excel_file_path, engine='openpyxl', mode='a') as writer:
-        df.to_excel(writer, sheet_name=sheet, index=False, header=False)
+        writer.book = pd.load_workbook(to_txt_from_excel_file_path)
+        df.to_excel(writer, sheet_name=sheet, index=False)
 
-    print(f"data가 {sheet} 시트에 성공적으로 저장되었습니다!")
+if __name__ == "__main__":
+    from_txt_file_path = "./Merge.txt"  # 실제 파일 경로로 변경해야 합니다.
+    to_txt_from_excel_file_path = "./Pathloss_Tool.xlsx"  # 실제 파일 경로로 변경해야 합니다.
+    sheet = "go"  # 추가하려는 시트의 이름으로 변경해야 합니다.
+
+    append_txt_to_excel(from_txt_file_path, to_txt_from_excel_file_path, sheet)
 
 
-from_txt_file_path = './Merge.txt'  # file path
-<<<<<<< HEAD
-to_txt_from_excel_file_path = './Pathloss_Tool.xlsx'  # excel path
-sheet = 'go'  # sheet name
-=======
-to_txt_from_excel_file_path = './ko.xlsx'  # excel path
-sheet = 'Sheet1'  # sheet name
->>>>>>> 1961c0f7f5a96b33e396130626d6a5b8cfe98407
-
-txt_to_excel(from_txt_file_path, to_txt_from_excel_file_path, sheet)
-print("Merge.txt 파일의 데이터가 Excel 파일에 복사되었습니다.")
-
+print("Merge.txt -> excel 로 변환 완료 되었습니다.! ")
 time.sleep(2)
 
 
 ##############################################
-<<<<<<< HEAD
 folder_path = "./unused_txt"
 folder_path_Pathloss_r2="./"
 current_directory = os.getcwd()
@@ -127,11 +108,6 @@ for i in range(1, 17):
 print("pathlos_txt, 파일로 변환 완료!")
 time.sleep(2)
 
-=======
-
-
-
->>>>>>> 1961c0f7f5a96b33e396130626d6a5b8cfe98407
 ############################################
 
 
@@ -148,7 +124,4 @@ perl_script_path = "./your_perl_script.pl"
 
 run_perl_program(perl_script_path)
 
-<<<<<<< HEAD
 time.sleep(2)
-=======
->>>>>>> 1961c0f7f5a96b33e396130626d6a5b8cfe98407
