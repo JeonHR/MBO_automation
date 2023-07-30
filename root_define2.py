@@ -9,9 +9,9 @@ with open(text_file_path, 'r') as file:
         data.append(line.strip().split(','))
 
 # 덮어쓰기를 원하는 엑셀 파일과 시트를 지정합니다.
-excel_file_path = './gogo.xlsx'
-sheet_name = 'go'
+excel_file_path = './Pathloss_Tool.xlsx'
 
+sheet_name = 'go'
 
 # 엑셀 파일을 열고 특정 시트를 가져옵니다.
 workbook = openpyxl.load_workbook(excel_file_path)
