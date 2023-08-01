@@ -49,30 +49,76 @@ time.sleep (2)
 
 
 
+import openpyxl
+import time
 
+# 텍스트 파일에서 데이터를 읽어옵니다.
+text_file_path = './Merge.txt'
+data = []
+with open(text_file_path, 'r') as file:
+    for line in file:
+        data.append(line.strip().split(','))
 
+# 덮어쓰기를 원하는 엑셀 파일과 시트를 지정합니다.
+excel_file_path = './Pathloss_Tool.xlsx'
 
-def append_txt_to_excel(from_txt_file_path, to_txt_from_excel_file_path, sheet):
-    # 텍스트 파일을 쉼표로 구분하여 데이터프레임으로 읽기
-    df = pd.read_csv(from_txt_file_path, sep=',')
+sheet_name = 'go'
 
-    # 기존 Excel 파일에 시트 추가 및 데이터 추가
-    with pd.ExcelWriter(to_txt_from_excel_file_path, engine='openpyxl', mode='a') as writer:
-        writer.book = pd.load_workbook(to_txt_from_excel_file_path)
-        df.to_excel(writer, sheet_name=sheet, index=False)
+# 엑셀 파일을 열고 특정 시트를 가져옵니다.
+workbook = openpyxl.load_workbook(excel_file_path)
+sheet = workbook[sheet_name]
 
-if __name__ == "__main__":
-    from_txt_file_path = "./Merge.txt"  # 실제 파일 경로로 변경해야 합니다.
-    to_txt_from_excel_file_path = "./Pathloss_Tool.xlsx"  # 실제 파일 경로로 변경해야 합니다.
-    sheet = "go"  # 추가하려는 시트의 이름으로 변경해야 합니다.
+# 기존 시트의 내용을 모두 삭제합니다.
+for row in sheet:
+    sheet.delete_rows(1, sheet.max_row)
 
-    append_txt_to_excel(from_txt_file_path, to_txt_from_excel_file_path, sheet)
+# 새로운 데이터를 시트에 추가합니다.
+for row_data in data:
+    sheet.append(row_data)
+
+# 변경사항을 저장하고 파일을 닫습니다.
+workbook.save(excel_file_path)
+workbook.close()
 
 
 print("Merge.txt -> excel 로 변환 완료 되었습니다.! ")
 time.sleep(2)
 
+##############################
+import win32com.client as win32
+import os
+import time
 
+# Excel 객체 생성
+excel = win32.Dispatch("Excel.Application")
+excel.Visible = False  # Excel 창을 보이도록 설정 (False로 설정하면 숨김)
+
+try:
+    # 현재 작업 디렉토리를 기준으로 상대 경로를 절대 경로로 변환
+    relative_path = "./Pathloss_Tool.xlsx"
+    absolute_path = os.path.abspath(relative_path)
+    
+
+    # 열기
+    wb = excel.Workbooks.Open(absolute_path)  # 상대 경로 대신 절대 경로를 사용
+
+    # 원하는 작업 수행 (예: 데이터 수정)
+
+    # 기존 파일에 덮어쓰기로 저장
+    wb.Save()
+
+    # 무조건 저장 (변경 사항이 없어도 저장)
+    wb.Close(SaveChanges=True)
+
+    # Excel 작업 완료 후 충분한 시간 대기 (예: 2초)
+    time.sleep(2)
+
+except Exception as e:
+    print(f"오류 발생: {e}")
+finally:
+    # Excel 종료
+    excel.Quit()
+    
 ##############################################
 folder_path = "./unused_txt"
 folder_path_Pathloss_r2="./"
@@ -120,7 +166,7 @@ def run_perl_program(perl_script_path):
     except subprocess.CalledProcessError as e:
         print(f"Error occurred: {e}")
 
-perl_script_path = "./your_perl_script.pl"
+perl_script_path = "./pathloss_put_macmini_r0_20200808.pl"
 
 run_perl_program(perl_script_path)
 
