@@ -8,7 +8,7 @@
 # [Procedure of perl]
 # windows setting : install strawberry perl (v5.28.1)
 # macmini setting : change 'cm' account type from 'standard' to 'admin'
-# 
+# Revision 23-07-23
 ####################################################################################################
 
 
