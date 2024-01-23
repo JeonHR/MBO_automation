@@ -14,5 +14,7 @@ Development of Automation Program for Pathloss Value Adjustment
    - Each library has a limitation of compatibility with each othe
    - openxl is required to use excel sheet's formula application
    - Pandas are advantageous for other extension transformations
-   - Enable Excel function with win32com for running actual apps using Excel function
--  
+   - Enable Excel function with win32com for running actual apps that used Excel function
+-  Ideas based on Excel function
+   - Each sheet can be divided by connecting and pasting it to excel function
+   - Satisfy the condition through Excel formula
